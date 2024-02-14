@@ -1,0 +1,112 @@
+package com.tapacademy;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.Scanner;
+
+import com.mysql.cj.xdevapi.ExprUnparser;
+
+
+public class upadataquerDay3 {
+
+	private static Statement Statement;
+	private static Connection connection;
+	private static PreparedStatement prstm ;
+	private static Object ResultSet;
+	private static java.sql.ResultSet res;
+
+	static final Scanner scan = new Scanner(System. in);
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		
+		
+		String url = "jdbc:mysql://localhost:3306/advancejava";
+		String name = "root";
+		String password ="root";
+		
+		
+		String sql =  "UPDATE  `employeejdbc` set `salary` = `salary` + ?  WHERE `dept` = ?";
+				
+				
+				
+		try {
+			Class.forName("com.mysql.cj.jdbc.Driver");
+			
+			
+			
+			connection  = DriverManager.getConnection(url , name, password);
+			
+			displayEmployeejdbc(connection);
+			
+			
+			
+			prstm =  connection.prepareStatement(sql);
+			
+			System.out.print("Enter the dept:");
+			String  department = scan.next();
+			
+			System.out.println("Enter the salary hike: ");
+			int inc = scan.nextInt();
+			
+			
+			prstm.setInt(1, inc);
+			prstm.setString (2,department);
+			
+		       
+			int i = prstm.executeUpdate();
+			System.out.println(i);
+			
+			displayEmployeejdbc(connection);
+			
+		
+			
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	
+	}
+	
+	
+	public static  void displayEmployeejdbc( Connection  connection)throws SQLException{
+		
+		Statement  = connection.createStatement();
+		
+		  ResultSet = res = Statement.executeQuery(" SELECT * from employeejdbc");
+		 
+		 while (res.next()) {
+			 
+			 System.out.println( res.getInt("id")+","+res.getString("name")+","+
+			 ","+res.getString("email")+","+res.getString("dept")+","+res.getInt("salary"));
+		 }
+		 System.out.println("-------------------------------------------------------------");
+		
+		
+		
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+}
+
+
